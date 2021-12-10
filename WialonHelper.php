@@ -7,7 +7,7 @@ class WialonHelper{
     public $devicesFilePath = __DIR__;
     public $wialonToken = "your_wialon_token";
 	
-	const SENSOR_TYPE = [
+    const SENSOR_TYPE = [
         'absolute fuel consumption' => 'Датчик абсолютного расхода топлива', 
         'accelerometer' => 'Акселерометр',
         'alarm trigger' => 'Тревожная кнопка', 
@@ -32,9 +32,9 @@ class WialonHelper{
         'trailer' => 'Привязка прицепа',
         'voltage' => 'Датчик напряжения', 
         'weight sensor' => 'Датчик веса'
-	];
+    ];
 	
-	const VALID_TYPE = [
+    const VALID_TYPE = [
         '1' => 'Логическое И', 
         '2' => 'Логическое ИЛИ', 
         '3' => 'Математическое И', 
@@ -47,7 +47,7 @@ class WialonHelper{
         '10' => 'Делить валидатор на датчик', 
         '11' => 'Проверка на неравенство нулю', 
         '12' => 'Заменять датчик валидатором в случае ошибки'
-	];
+    ];
 	
     // Поиск
     public function searchItems($request, array $options=[]): array
