@@ -1,100 +1,83 @@
 <?php 
 
-// Класс использует класс Wialon: https://github.com/wialon/php-wialon/blob/master/wialon.php
+// WialonHelper использует класс Wialon: https://github.com/wialon/php-wialon/blob/master/wialon.php
 
 class WialonHelper{
 	
-	public $devicesFilePath = __DIR__;
-	public $wialonToken = "your_wialon_token";
+    public $devicesFilePath = __DIR__;
+    public $wialonToken = "your_wialon_token";
 	
-    public function TypeSensor(string $deviceType): string
+	const SENSOR_TYPE = [
+        'absolute fuel consumption' => 'Датчик абсолютного расхода топлива', 
+        'accelerometer' => 'Акселерометр',
+        'alarm trigger' => 'Тревожная кнопка', 
+        'counter' => 'Счетчик', 
+        'custom' => 'Произвольный датчик', 
+        'digital' => 'Произвольный цифровой датчик',
+        'driver' => 'Привязка водителя',
+        'engine efficiency' => 'Датчик полезной работы двигателя', 
+        'engine hours' => 'Абсолютные моточасы', 
+        'engine operation' => 'Датчик зажигания', 
+        'engine rpm' => 'датчик оборотов двигателя', 
+        'fuel level impulse sensor' => 'Импульсный датчик уровня топлива', 
+        'fuel level' => 'Датчик уровня топлива', 
+        'impulse fuel consumption' => 'Импульсный датчик расхода топлива', 
+        'instant fuel consumption' => 'Датчик мгновенного расхода топлива', 
+        'mileage' => 'Датчик пробега',
+        'odometer' => 'Относительный одометр',
+        'private mode' => 'Частный режим', 
+        'relative engine hours' => 'Относительные моточасы', 
+        'temperature coefficient' => 'Коэффициент температуры', 
+        'temperature' => 'Датчик температуры', 
+        'trailer' => 'Привязка прицепа',
+        'voltage' => 'Датчик напряжения', 
+        'weight sensor' => 'Датчик веса'
+	];
+	
+	const VALID_TYPE = [
+        '1' => 'Логическое И', 
+        '2' => 'Логическое ИЛИ', 
+        '3' => 'Математическое И', 
+        '4' => 'Математическое ИЛИ', 
+        '5' => 'Суммировать', 
+        '6' => 'Вычесть валидатор из датчика', 
+        '7' => 'Вычесть датчик из валидатора', 
+        '8' => 'Перемножить', 
+        '9' => 'Делить датчик на валидатор', 
+        '10' => 'Делить валидатор на датчик', 
+        '11' => 'Проверка на неравенство нулю', 
+        '12' => 'Заменять датчик валидатором в случае ошибки'
+	];
+	
+    // Поиск
+    public function searchItems($request, array $options=[]): array
     {
-        switch($deviceType){
-            case "absolute fuel consumption": 
-                return "Датчик абсолютного расхода топлива"; 
-            case "accelerometer":
-                return "Акселерометр";
-            case "alarm trigger": 
-                return "Тревожная кнопка"; 
-            case "counter":  
-                return "Счетчик"; 
-            case "custom":  
-                return "Произвольный датчик"; 
-            case "digital":  
-                return "Произвольный цифровой датчик";
-            case "driver":  
-                return "Привязка водителя";
-            case "engine efficiency":  
-                return "Датчик полезной работы двигателя"; 
-            case "engine hours":  
-                return "Абсолютные моточасы"; 
-            case "engine operation":  
-                return "Датчик зажигания"; 
-            case "engine rpm":  
-                return "датчик оборотов двигателя"; 
-            case "fuel level impulse sensor":  
-                return "Импульсный датчик уровня топлива"; 
-            case "fuel level":  
-                return "Датчик уровня топлива"; 
-            case "impulse fuel consumption":  
-                return "Импульсный датчик расхода топлива"; 
-            case "instant fuel consumption":  
-                return "Датчик мгновенного расхода топлива"; 
-            case "mileage":  
-                return "Датчик пробега"; 
-            case "odometer":  
-                return "Относительный одометр"; ;
-            case "private mode":  
-                return "Частный режим"; 
-            case "relative engine hours":  
-                return "Относительные моточасы"; 
-            case "temperature coefficient":  
-                return "Коэффициент температуры"; 
-            case "temperature":  
-                return "Датчик температуры"; 
-            case "trailer":  
-                return "Привязка прицепа"; ;
-            case "voltage":  
-                return "Датчик напряжения"; 
-            case "weight sensor":  
-                return "Датчик веса"; 
-            default:  
-                return "not_type";
+        if(!isset($options["itemsType"])){$options["spec"]["itemsType"] = "avl_unit";}
+        if(!isset($options["propName"])){$options["spec"]["propName"] = "sys_name";}
+        $options["spec"]["propValueMask"] = "*".trim($request, "\*\ ")."*";
+        if(!isset($options["sortType"])){$options["spec"]["sortType"] = "sys_name";}
+        if(!isset($options["propType"])){$options["spec"]["propType"] = "property";}
+        if(!isset($options["or_logic"])){$options["spec"]["or_logic"] = "0";}
+        if(!isset($options["force"])){$options["force"] = "1";}
+        if(!isset($options["flags"])){$options["flags"] = "1";}
+        if(!isset($options["from"])){$options["from"] = "0";}
+        if(!isset($options["to"])){$options["to"] = "0";}
+
+        $Wialon = new Wialon();
+        $result = $Wialon->login($this->wialonToken);
+        $json = json_decode($result, true);
+
+        if(isset($json['error'])){
+            throw new \Exception(WialonError::error($json['error']));
         }
+
+        $jsonstring = $Wialon->core_search_items(json_encode($options));
+        $searchResult = json_decode($jsonstring, true);
+        $Wialon->logout();
+        return $searchResult;
     }
-    
-    public function TypeValid(int $num): string
-    {
-        switch ($num){
-            case 1: 
-                return "Логическое И"; 
-            case 2: 
-                return "Логическое ИЛИ"; 
-            case 3: 
-                return "Математическое И"; 
-            case 4: 
-                return "Математическое ИЛИ"; 
-            case 5: 
-                return "Суммировать"; 
-            case 6: 
-                return "Вычесть валидатор из датчика"; 
-            case 7: 
-                return "Вычесть датчик из валидатора"; 
-            case 8: 
-                return "Перемножить"; 
-            case 9: 
-                return "Делить датчик на валидатор"; 
-            case 10: 
-                return "Делить валидатор на датчик"; 
-            case 11: 
-                return "Проверка на неравенство нулю"; 
-            case 12: 
-                return "Заменять датчик валидатором в случае ошибки"; 
-            default: 
-                return "not_type";
-        }
-    }
-    
+	
+    // Запрос поддерживаемых устройств Wialon и запись в файл 
     public function getAllDevices(): array
     {
         $Wialon = new Wialon();
@@ -104,9 +87,9 @@ class WialonHelper{
             throw new \Exception(WialonError::error($json['error']));
         }
         $jsonstring = $Wialon->core_get_hw_types('{
-                                                    "filterType":"name",
-                                                    "includeType":1
-                                                }');
+            "filterType":"name",
+            "includeType":1
+        }');
         $string_array = json_decode($jsonstring, true);
         $Wialon->logout();
         $devicesAsArray = [];
@@ -123,6 +106,7 @@ class WialonHelper{
         return $devicesAsArray["devices"];
     }
     
+    // Определение устройства по id
     public function deviceName(int $device_id): string
     {
         if(!file_exists($this->devicesFilePath.'/devices.json')){
@@ -133,6 +117,26 @@ class WialonHelper{
             return $devices_array["devices"][$device_id];
         }else{
             return "unknown";
+        }
+    }
+	
+    // Тип датчика
+    public function SensorType(string $deviceType): string
+    {
+        if(array_key_exists($deviceType, $this->SENSOR_TYPE)){
+            return $this->SENSOR_TYPE[$deviceType];
+        }else{
+            return "not_type";
+        }
+    }
+    
+    // Тип валидации датчика
+    public function ValidType(int $num): string
+    {
+        if(array_key_exists($num, $this->VALID_TYPE)){
+            return $this->VALID_TYPE[$deviceType];
+        }else{
+            return "not_type";
         }
     }
     
