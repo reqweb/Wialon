@@ -1,20 +1,11 @@
 # WialonHelper
 ### Класс для работы с объектами и датчиками в Wialon
 ___
-#### `$wialonToken`  
-токен доступа к API Wialon
-_____
-#### `$FileFolderPath`  
-путь к папке для хранения файлов, создаваемых калассом WialonHelper
-___
-#### `$dateFormat`  
-формат даты
-___
-#### `SENSOR_TYPE`  
-Массив типов датчиков в Wialon
-___
-#### `VALID_TYPE`  
-Массив с кодом и соответствующим значением типов валидации в Wialon
+**`$wialonToken`** - токен доступа к API Wialon  
+**`$FileFolderPath`** - путь к папке для хранения файлов, создаваемых калассом WialonHelper  
+**`$dateFormat`** - формат даты  
+**`SENSOR_TYPE`** - Массив типов датчиков в Wialon  
+**`VALID_TYPE`** - Массив с кодом и соответствующим значением типов валидации в Wialon
 ___
 #### `searchItems($request, array $options=[])`  
 Осуществляет поиск объекта в Wialon по заданным параметрам.  
