@@ -178,7 +178,7 @@ class WialonHelper{
         $parsedSensor = [];
         $parsedSensor["id"] = $rawSensor["id"];
         $parsedSensor["name"] = $rawSensor["n"];
-        $parsedSensor["type"] = $this->SensorType($rawSensor["t"]);
+        $parsedSensor["type"] = $this->sensorType($rawSensor["t"]);
         if(!empty($rawSensor["m"])){
             $parsedSensor["m"] = $rawSensor["m"];
         }
@@ -195,7 +195,7 @@ class WialonHelper{
         }
         if(!empty($rawSensor["vs"]) && $rawSensor["vs"] != 0){
             $parsedSensor["validSensor"] = $rawSensor["vs"];
-            $parsedSensor["validType"] =  $this->ValidType($rawSensor["vt"]);
+            $parsedSensor["validType"] =  $this->validType($rawSensor["vt"]);
         }
         if(!empty($paramDescParts[1])){
             $tableRaw = explode(":", $paramDescParts[1]);
@@ -308,7 +308,7 @@ class WialonHelper{
     }
     
     // Тип датчика
-    public function SensorType(string $deviceType): string
+    public function sensorType(string $deviceType): string
     {
         if(array_key_exists($deviceType, self::SENSOR_TYPE)){
             return self::SENSOR_TYPE[$deviceType];
@@ -318,7 +318,7 @@ class WialonHelper{
     }
     
     // Тип валидации датчика
-    public function ValidType(int $num): string
+    public function validType(int $num): string
     {
         if(array_key_exists($num, self::VALID_TYPE)){
             return self::VALID_TYPE[$num];
