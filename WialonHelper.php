@@ -119,7 +119,8 @@ class WialonHelper{
     public function ShortInfo(
         int $objectId, // id объекта
         bool $lastMessage = false, // Возвращать в массиве последнее сообщение объекта
-        bool $sensors = false // Возвращать в массиве датчики объекта
+        bool $sensors = false, // Возвращать в массиве датчики объекта
+        bool $tableRaw = false // Возвращать в массиве датчика таблицу расчёта
     ): array
     {
         $parsedObject = [];
@@ -151,16 +152,16 @@ class WialonHelper{
         }
         if($sensors && isset($rawObject["item"]["sens"])){
             if(isset($parsedObject["last_message"])){
-                $parsedObject["sensors"] = $this->processingArraySensors($rawObject["item"]["sens"], $parsedObject["last_message"]);
+                $parsedObject["sensors"] = $this->processingArraySensors($rawObject["item"]["sens"], $parsedObject["last_message"], $tableRaw);
             }else{
-                $parsedObject["sensors"] = $this->processingArraySensors($rawObject["item"]["sens"]);
+                $parsedObject["sensors"] = $this->processingArraySensors($rawObject["item"]["sens"], [], $tableRaw);
             }
         }
         return $parsedObject;
     }
     
     // Обработка датчиков объекта
-    public function processingArraySensors(array $rawSensors, $lastMessage = []): array
+    public function processingArraySensors(array $rawSensors, $lastMessage = [], bool $tableRaw = false): array
     {
         $parsedSensors = [];
         if(count($rawSensors) > 0){
@@ -177,7 +178,7 @@ class WialonHelper{
     }
     
     // Обработка датчикa
-    public function sensorProcessing(array $rawSensor): array
+    public function sensorProcessing(array $rawSensor, bool $tableRaw = false): array
     {
         $parsedSensor = [];
         $parsedSensor["id"] = $rawSensor["id"];
@@ -201,7 +202,7 @@ class WialonHelper{
             $parsedSensor["validSensor"] = $rawSensor["vs"];
             $parsedSensor["validType"] =  $this->validType($rawSensor["vt"]);
         }
-        if(!empty($paramDescParts[1])){
+        if(!empty($paramDescParts[1]) && $tableRaw){
             $tableRaw = explode(":", $paramDescParts[1]);
             $parsedSensor["tableRaw"] = [];
             $count = 0;
