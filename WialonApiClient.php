@@ -1,8 +1,8 @@
 <?php 
 
-// WialonHelper использует класс Wialon: https://github.com/wialon/php-wialon/blob/master/wialon.php
+// WialonApiClient использует класс Wialon: https://github.com/wialon/php-wialon/blob/master/wialon.php
 
-class WialonHelper{
+class WialonApiClient{
     
     private $wialonToken = "your_wialon_token";
     
