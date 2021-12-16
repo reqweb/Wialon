@@ -1,4 +1,4 @@
-# WialonHelper
+# WialonApiClient
 ### Класс для работы с Wialon API
 ___
 **`$wialonToken`** - токен доступа к API Wialon  
