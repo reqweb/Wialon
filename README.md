@@ -1,5 +1,5 @@
 # WialonHelper
-### Класс для работы с объектами и датчиками в Wialon
+### Класс для работы с Wialon API
 ___
 **`$wialonToken`** - токен доступа к API Wialon  
 **`$FileFolderPath`** - путь к папке для хранения файлов, создаваемых классом WialonHelper  
@@ -39,16 +39,19 @@ ___
 `$objectId` (число) - id объекта в Wialon.  
 `$lastMessage` (true/false) - Возвращать в массиве последнее сообщение объекта  
 `$sensors` (true/false) - Возвращать в массиве датчики объекта  
+`$tableRaw` (true/false) - Возвращать в массиве датчика таблицу расчёта  
 ___
-#### `processingArraySensors(array $rawSensors, $lastMessage = [])`  
+#### `processingArraySensors(array $rawSensors, $lastMessage = [], bool $tableRaw = false)`  
 `$rawSensors` - Массив датчиков объекта  
-`$lastMessage` - Последнее сообщение (массив, необязательный параметр).   
+`$lastMessage` - Последнее сообщение (массив, необязательный параметр).  
+`$tableRaw` (true/false) - Возвращать в массиве датчика таблицу расчёта  
 Если будет передано последнее сообщение то возвращаемый массив будет содержать ключ `lastVal`, с последним значением параметра, используемого датчиком.  
 Ключ `lastVal` будет в возвращаемом массиве только в случае если парамет для датчика задан напрямую, без квадратных скобок и выражений.  
 ___
-#### `sensorProcessing(array $rawSensor)`  
+#### `sensorProcessing(array $rawSensor, bool $tableRaw = false)`  
 Возвращает массив с обработанной информацией датчика.  
 `$rawSensor` (массив) - сырой массив датчика.  
+`$tableRaw` (true/false) - Возвращать в массиве датчика таблицу расчёта  
 Определит тип датчика и тип валидации, при наличии валидации.    
 ___
 #### `getAllDevices()`  
