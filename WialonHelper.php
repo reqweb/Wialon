@@ -150,7 +150,11 @@ class WialonHelper{
             $parsedObject["last_message"] = $rawObject["item"]["lmsg"];
         }
         if($sensors && isset($rawObject["item"]["sens"])){
-            $parsedObject["sensors"] = $this->processingArraySensors($rawObject["item"]["sens"], $parsedObject["last_message"]);
+            if(isset($parsedObject["last_message"])){
+                $parsedObject["sensors"] = $this->processingArraySensors($rawObject["item"]["sens"], $parsedObject["last_message"]);
+            }else{
+                $parsedObject["sensors"] = $this->processingArraySensors($rawObject["item"]["sens"]);
+            }
         }
         return $parsedObject;
     }
