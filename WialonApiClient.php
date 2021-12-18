@@ -116,7 +116,7 @@ class WialonApiClient{
     }
     
     // Обрабатывает массив полученный от getObjectData, возвращая информацию о объекте
-    public function ShortInfo(
+    public function shortInfo(
         int $objectId, // id объекта
         bool $lastMessage = false, // Возвращать в массиве последнее сообщение объекта
         bool $sensors = false, // Возвращать в массиве датчики объекта
