@@ -47,4 +47,12 @@ class WialonStatistics{
         }
         return $statisticsDevice;
     }
+    
+    public function parseDevice(array $statDevice)
+    {
+    
+    }
+    
+    
+    
 }
