@@ -50,7 +50,17 @@ class WialonStatistics{
     
     public function parseDevice(array $statDevice)
     {
-    
+        $WialonApiClient = new WialonApiClient();
+        foreach($statDevice["devicesCount"] as $deviceId => $deviceCount){
+            $deviceName = $WialonApiClient->deviceName($deviceId);
+            $statDevice["devicesCount"][$deviceName] = $statDevice["devicesCount"][$deviceId];
+            unset($statDevice["devicesCount"][$deviceId]);
+            $statDevice["devicePercent"][$deviceName] = $statDevice["devicePercent"][$deviceId];
+            unset($statDevice["devicePercent"][$deviceId]);
+        }
+        arsort($statDevice["devicesCount"], SORT_NUMERIC);
+        arsort($statDevice["devicePercent"], SORT_NUMERIC);
+        return $statDevice;
     }
     
     
