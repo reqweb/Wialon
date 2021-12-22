@@ -10,7 +10,7 @@ class WialonStatistics{
     public function getRawObjects()
     {
         $WialonApiClient = new WialonApiClient();
-        $objectsRaw = $WialonApiClient->searchItems("", ["flags" => 2102529]); // 2101505
+        $objectsRaw = $WialonApiClient->searchItems("", ["flags" => 2102529]);
         if(file_put_contents($this->FileFolderPath.'/objectsRaw.json', json_encode($objectsRaw, JSON_UNESCAPED_UNICODE)) === false){
             throw new \Exception("Не удалось записать файл objectsRaw.json");
         }
