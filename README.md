@@ -2,7 +2,7 @@
 ### Класс для работы с Wialon API
 ___
 **`$wialonToken`** - токен доступа к API Wialon  
-**`$FileFolderPath`** - путь к папке для хранения файлов, создаваемых классом WialonHelper  
+**`$FileFolderPath`** - путь к папке для хранения файлов, создаваемых классом WialonApiClient
 **`$dateFormat`** - формат даты  
 **`SENSOR_TYPE`** - Массив типов датчиков в Wialon  
 **`VALID_TYPE`** - Массив с кодом и соответствующим значением типов валидации в Wialon
